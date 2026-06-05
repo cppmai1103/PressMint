@@ -1,0 +1,141 @@
+name: PressMint Preview Sample Generator
+
+on:
+  workflow_run:
+    workflows: ["Validate"]
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract PR number
+        id: meta
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const pr = run.pull_requests[0];
+            core.setOutput("number", pr.number);
+      - name: Download metadata
+        uses: actions/download-artifact@v4
+        with:
+          name: pressmint-meta-pr-${{ steps.meta.outputs.number }}
+      - name: Load metadata
+        id: meta_load
+        run: |
+          DATA=$(cat pressmint.json)
+          echo "PRESS_COUNT=$(echo "$DATA" | jq -r '.press_count')" >> $GITHUB_OUTPUT
+          echo "PRESS_PROCESS=$(echo "$DATA" | jq -c '.press_process')" >> $GITHUB_OUTPUT
+      - name: Gate preview
+        if: steps.meta.outputs.PRESS_COUNT != '1'
+        run: |
+          echo "::notice:: Skipping preview generation as ${steps.meta.outputs.PRESS_COUNT} press folders were changed"
+          exit 0
+
+      # -----------------------------
+      # 1. Checkout PR source safely
+      # -----------------------------
+      - name: Checkout PR
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: src
+
+      # -----------------------------
+      # 2. Run PressMintBuild
+      # -----------------------------
+      - name: Run PressMintBuild
+        uses: your-org/PressMintBuild@v1
+        with:
+          source-dir: src
+          output-dir: build
+
+      # -----------------------------
+      # 3. Prepare preview branch
+      # -----------------------------
+      - name: Publish preview branch
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PRESS_CODE: ${{ steps.meta_load.outputs.PRESS_PROCESS | fromJson | first }}
+          BRANCH: preview-pr-${{ github.event.pull_request.number }}--${PRESS_CODE,,}
+        run: |
+          set -e
+
+          echo "Publishing preview branch: $BRANCH"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # clone repo with token
+          git clone \
+            https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
+            repo
+
+          cd repo
+
+          # create or switch to orphan branch
+          git checkout --orphan "$BRANCH" || git checkout "$BRANCH"
+
+          # clean branch
+          git rm -rf . || true
+
+          # copy only sample output
+          mkdir -p sample
+          cp -R ../build/sample/* sample/
+
+          # commit only if changes exist
+          git add sample
+
+          if git diff --cached --quiet; then
+            echo "No changes in sample"
+            exit 0
+          fi
+
+          git commit -m "PressMint preview for PR #$PR_NUMBER"
+
+          git push origin "$BRANCH" --force
+
+      # -----------------------------
+      # 4. Comment on PR (idempotent)
+      # -----------------------------
+      - name: Find existing comment
+        id: find_comment
+        uses: peter-evans/find-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "<!-- pressmint-preview -->"
+
+      - name: Create or update PR comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            <!-- pressmint-preview -->
+
+            ## 🧪 PressMint Preview
+
+            A sample has been generated for this PR.
+
+            **Preview branch:**
+            ```
+            preview-pr-${{ github.event.pull_request.number }}
+            ```
+
+            **Sample URL:**
+            https://github.com/${{ github.repository }}/tree/preview-pr-${{ github.event.pull_request.number }}/sample
+
+            ⚡ This preview updates automatically on every push.
