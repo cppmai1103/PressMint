@@ -88,7 +88,7 @@ jobs:
         env:
           PR_NUMBER: ${{ steps.pr.outputs.number }}
           PRESS_CODE: ${{ steps.meta.outputs.PRESS_CODE }}
-          BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE,,}}
+          BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE}}
           BUILD_DIR: ${{ steps.build.outputs.build_dir }}
           BUILD_SAMPLE: ${{ steps.build.outputs.build_sample }}
         run: |
@@ -154,10 +154,10 @@ jobs:
 
             **Preview branch:**
             ```
-            preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE,, }}
+            preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE}}
             ```
 
             **Sample URL:**
-            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE,, }}/Sample/PressMint-${{ steps.meta_load.outputs.PRESS_CODE }}
+            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE}}/Sample/PressMint-${{ steps.meta_load.outputs.PRESS_CODE }}
 
             This preview updates automatically on every push.
