@@ -73,10 +73,9 @@ jobs:
       # 2. Run PressMintBuild
       # -----------------------------
       - name: Run PressMintBuild
-        uses: your-org/PressMintBuild@v1
+        uses: ./PressMint/.github/actions/PressMintBuild
         with:
-          source-dir: src
-          output-dir: build
+          press: '${{ steps.meta_load.outputs.PRESS_CODE }}'
 
       # -----------------------------
       # 3. Prepare preview branch
@@ -91,8 +90,8 @@ jobs:
 
           echo "Publishing preview branch: $BRANCH"
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name 'Matyáš Kopp (through GitHub Action)'
+          git config --global user.email 'matyaskopp@users.noreply.github.com'
 
           # clone repo with token
           git clone \
