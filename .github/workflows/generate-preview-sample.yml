@@ -42,16 +42,41 @@ jobs:
             core.setOutput('head_sha', pr.head.sha);
             core.setOutput('head_repo', pr.head.repo.full_name);
             core.setOutput('head_ref', pr.head.ref);
+      - name: Find Validate run
+        id: run
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const prNumber = Number('${{ inputs.pr_number }}');
+      
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: "Validate.yml",
+              event: "pull_request",
+              status: "success"
+            });
+      
+            const run = runs.data.workflow_runs.find(r =>
+              r.pull_requests?.some(pr => pr.number === prNumber)
+            );
+      
+            if (!run) {
+              core.setFailed("No Validate run found for PR");
+            }
+      
+            core.setOutput("run_id", run.id);
       - name: List artifacts
         uses: actions/github-script@v8
         id: artifact
         with:
           script: |
-     
+            const runId = Number('${{ steps.run.outputs.run_id }}');
             const artifacts =
               await github.rest.actions.listWorkflowRunArtifacts({
                 owner: context.repo.owner,
-                repo: context.repo.repo
+                repo: context.repo.repo,
+                run_id: runId
               });
       
             const artifact = artifacts.data.artifacts.find(
