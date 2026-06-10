@@ -51,8 +51,7 @@ jobs:
             const artifacts =
               await github.rest.actions.listWorkflowRunArtifacts({
                 owner: context.repo.owner,
-                repo: context.repo.repo,
-                run_id: ${{steps.pr.outputs.number}}
+                repo: context.repo.repo
               });
       
             const artifact = artifacts.data.artifacts.find(
