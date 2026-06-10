@@ -49,8 +49,8 @@ jobs:
       - name: Checkout PR
         uses: actions/checkout@v5
         with:
-          repository: ${{ steps.pr.outputs.head_repo }}
-          ref: ${{ steps.pr.outputs.head_sha }}
+          repository: ${{ github.repository }}
+          ref: refs/pull/${{ inputs.pr_number }}/merge
           fetch-depth: 2
           path: PressMint
 
