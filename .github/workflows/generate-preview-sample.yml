@@ -45,14 +45,13 @@ jobs:
       - name: Download metadata
         uses: actions/download-artifact@v4
         with:
-          name: pressmint-meta-pr-${{ steps.meta.outputs.number }}
+          name: pressmint-meta-pr-${{ steps.pr.outputs.number }}
       - name: Load metadata
-        id: meta_load
+        id: meta
         run: |
           DATA=$(cat pressmint.json)
           echo "PRESS_COUNT=$(echo "$DATA" | jq -r '.press_count')" >> $GITHUB_OUTPUT
-          echo "PRESS_PROCESS=$(echo "$DATA" | jq -c '.press_process')" >> $GITHUB_OUTPUT
-          echo "PRESS_CODE=$(echo '${{ steps.meta_load.outputs.press_process }}' | jq -r '.[0]')" >> $GITHUB_OUTPUT
+          echo "PRESS_Code=$(echo "$DATA" | jq -c '.press_process' | jq -r '.[0]')" >> $GITHUB_OUTPUT
       - name: Gate preview
         if: steps.meta.outputs.PRESS_COUNT != '1'
         run: |
@@ -75,7 +74,7 @@ jobs:
       - name: Run PressMintBuild
         uses: ./PressMint/.github/actions/PressMintBuild
         with:
-          press: '${{ steps.meta_load.outputs.PRESS_CODE }}'
+          press: '${{ steps.meta.outputs.PRESS_CODE }}'
 
       # -----------------------------
       # 3. Prepare preview branch
@@ -83,7 +82,7 @@ jobs:
       - name: Publish preview branch
         env:
           PR_NUMBER: ${{ steps.pr.outputs.number }}
-          PRESS_CODE: ${{ steps.meta_load.outputs.PRESS_CODE }}
+          PRESS_CODE: ${{ steps.meta.outputs.PRESS_CODE }}
           BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${PRESS_CODE,,}
         run: |
           set -e
@@ -148,10 +147,10 @@ jobs:
 
             **Preview branch:**
             ```
-            preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta_load.outputs.PRESS_CODE }}
+            preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE }}
             ```
 
             **Sample URL:**
-            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta_load.outputs.PRESS_CODE }}/Sample/PressMint-${{ steps.meta_load.outputs.PRESS_CODE }}
+            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE }}/Sample/PressMint-${{ steps.meta_load.outputs.PRESS_CODE }}
 
             This preview updates automatically on every push.
