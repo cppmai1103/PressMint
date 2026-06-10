@@ -85,7 +85,11 @@ jobs:
         uses: ./PressMint/.github/actions/PressMintBuild
         with:
           press: '${{ steps.meta.outputs.PRESS_CODE }}'
-
+      - name: Show outputs
+        run: |
+          echo "Status: ${{ steps.build.outputs.status }}"
+          echo "Build dir: ${{ steps.build.outputs.build_dir }}"
+          echo "Sample dir: ${{ steps.build.outputs.build_sample }}"
       # -----------------------------
       # 3. Prepare preview branch
       # -----------------------------
