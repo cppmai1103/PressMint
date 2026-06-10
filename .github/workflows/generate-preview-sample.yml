@@ -60,8 +60,8 @@ jobs:
       - name: Get metadata status
         id: meta
         run: |
-          echo "PRESS_COUNT=${{ steps.detect-changes.outputs.press_count }}" >> $GITHUB_OUTPUT
-          echo "PRESS_CODE=$(echo " '${{ steps.detect-changes.outputs.press_process }}'" | jq -r '.[0]')" >> $GITHUB_OUTPUT
+          echo "PRESS_COUNT=$(echo  '${{ steps.detect-changes.outputs.press_changed }}' | jq '.|length')" >> $GITHUB_OUTPUT
+          echo "PRESS_CODE=$(echo  '${{ steps.detect-changes.outputs.press_changed }}' | jq -r '.[0]')" >> $GITHUB_OUTPUT
 
       - name: Gate preview
         if: steps.meta.outputs.PRESS_COUNT != '1'
