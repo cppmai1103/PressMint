@@ -69,6 +69,9 @@ jobs:
           echo "::notice:: Skipping preview generation as ${steps.meta.outputs.PRESS_COUNT} press folders were changed"
           exit 0
 
+      - name: Setup # initialize dependencies cache - used in next steps
+        uses: ./PressMint/.github/actions/PressMintSetup
+
       # -----------------------------
       # 2. Run PressMintBuild
       # -----------------------------
