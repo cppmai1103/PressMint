@@ -114,7 +114,7 @@ jobs:
 
           # copy only sample output
           mkdir -p Sample
-          cp -R $BUILD_SAMPLE sample/
+          cp -R $BUILD_SAMPLE Sample/
 
           # commit only if changes exist
           git add Sample
