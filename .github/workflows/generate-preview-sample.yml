@@ -57,7 +57,7 @@ jobs:
               });
       
             const artifact = artifacts.data.artifacts.find(
-              a => a.name === 'pressmint-meta-pr-65'
+              a => a.name === 'pressmint-meta-pr-${{steps.pr.outputs.number}}'
             );
       
             if (!artifact) {
