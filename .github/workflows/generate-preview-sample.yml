@@ -51,6 +51,7 @@ jobs:
         with:
           repository: ${{ steps.pr.outputs.head_repo }}
           ref: ${{ steps.pr.outputs.head_sha }}
+          path: PressMint
 
       - name: PressMint status (Detect changed files and get list of countries that should be processed)
         id: detect-changes
