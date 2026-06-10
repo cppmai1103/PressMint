@@ -42,6 +42,17 @@ jobs:
             core.setOutput('head_sha', pr.head.sha);
             core.setOutput('head_repo', pr.head.repo.full_name);
             core.setOutput('head_ref', pr.head.ref);
+
+      # -----------------------------
+      # 1. Checkout PR source safely
+      # -----------------------------
+      - name: Checkout PR
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ steps.pr.outputs.head_repo }}
+          ref: ${{ steps.pr.outputs.head_sha }}
+          path: src
+
       - name: PressMint status (Detect changed files and get list of countries that should be processed)
         id: detect-changes
         uses: ./PressMint/.github/actions/PressMintStatus
@@ -56,15 +67,6 @@ jobs:
         run: |
           echo "::notice:: Skipping preview generation as ${steps.meta.outputs.PRESS_COUNT} press folders were changed"
           exit 0
-      # -----------------------------
-      # 1. Checkout PR source safely
-      # -----------------------------
-      - name: Checkout PR
-        uses: actions/checkout@v5
-        with:
-          repository: ${{ steps.pr.outputs.head_repo }}
-          ref: ${{ steps.pr.outputs.head_sha }}
-          path: src
 
       # -----------------------------
       # 2. Run PressMintBuild
