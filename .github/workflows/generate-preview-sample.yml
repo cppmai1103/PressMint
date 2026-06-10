@@ -18,20 +18,30 @@ permissions:
 
 jobs:
   preview:
-    if: >
-      github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch'
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Extract PR number
-        id: meta
+      - name: Load PR metadata
+        id: pr
         uses: actions/github-script@v8
         with:
           script: |
-            const run = context.payload.workflow_run;
-            const pr = run.pull_requests[0];
-            core.setOutput("number", pr.number);
+            const prNumber = Number('${{ inputs.pr_number }}');
+      
+            const [owner, repo] = '${{ inputs.repo }}'.split('/');
+      
+            const { data: pr } = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: prNumber
+            });
+      
+            core.setOutput('number', pr.number);
+            core.setOutput('head_sha', pr.head.sha);
+            core.setOutput('head_repo', pr.head.repo.full_name);
+            core.setOutput('head_ref', pr.head.ref);
       - name: Download metadata
         uses: actions/download-artifact@v4
         with:
@@ -55,8 +65,8 @@ jobs:
       - name: Checkout PR
         uses: actions/checkout@v5
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.sha }}
+          repository: ${{ steps.pr.outputs.head_repo }}
+          ref: ${{ steps.pr.outputs.head_sha }}
           path: src
 
       # -----------------------------
@@ -73,9 +83,9 @@ jobs:
       # -----------------------------
       - name: Publish preview branch
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
           PRESS_CODE: ${{ steps.meta_load.outputs.PRESS_CODE }}
-          BRANCH: preview-pr-${{ github.event.pull_request.number }}--${PRESS_CODE,,}
+          BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${PRESS_CODE,,}
         run: |
           set -e
 
@@ -120,7 +130,7 @@ jobs:
         id: find_comment
         uses: peter-evans/find-comment@v4
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr.outputs.number }}
           comment-author: "github-actions[bot]"
           body-includes: "<!-- pressmint-preview -->"
 
@@ -128,21 +138,21 @@ jobs:
         uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find_comment.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.pr.outputs.number }}
           edit-mode: replace
           body: |
             <!-- pressmint-preview -->
 
-            ## 🧪 PressMint Preview
+            ## PressMint Preview
 
             A sample has been generated for this PR.
 
             **Preview branch:**
             ```
-            preview-pr-${{ github.event.pull_request.number }}
+            preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta_load.outputs.PRESS_CODE }}
             ```
 
             **Sample URL:**
-            https://github.com/${{ github.repository }}/tree/preview-pr-${{ github.event.pull_request.number }}/sample
+            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta_load.outputs.PRESS_CODE }}/Sample/PressMint-${{ steps.meta_load.outputs.PRESS_CODE }}
 
-            ⚡ This preview updates automatically on every push.
+            This preview updates automatically on every push.
