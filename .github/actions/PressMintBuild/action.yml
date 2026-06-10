@@ -48,6 +48,9 @@ runs:
                 || echo "::notice:: PressMint-${{inputs.press}} build-validation PASSED"
         fi
         echo "status=$STATUS" >> $GITHUB_OUTPUT
+        echo "build_dir=${BUILDDIR}" >> $GITHUB_OUTPUT
+        echo "build_sample=${BUILDDIR}/Distro/PressMint-${{inputs.press}}" >> $GITHUB_OUTPUT
+        
       shell: bash
       continue-on-error: true
 

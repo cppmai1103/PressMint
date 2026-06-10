@@ -76,6 +76,7 @@ jobs:
       # 2. Run PressMintBuild
       # -----------------------------
       - name: Run PressMintBuild
+        id: build
         uses: ./PressMint/.github/actions/PressMintBuild
         with:
           press: '${{ steps.meta.outputs.PRESS_CODE }}'
@@ -87,7 +88,9 @@ jobs:
         env:
           PR_NUMBER: ${{ steps.pr.outputs.number }}
           PRESS_CODE: ${{ steps.meta.outputs.PRESS_CODE }}
-          BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${PRESS_CODE,,}
+          BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE,,}}
+          BUILD_DIR: ${{ steps.build.outputs.build_dir }}
+          BUILD_SAMPLE: ${{ steps.build.outputs.build_sample }}
         run: |
           set -e
 
@@ -110,18 +113,18 @@ jobs:
           git rm -rf . || true
 
           # copy only sample output
-          mkdir -p sample
-          cp -R ../build/sample/* sample/
+          mkdir -p Sample
+          cp -R $BUILD_SAMPLE sample/
 
           # commit only if changes exist
-          git add sample
+          git add Sample
 
           if git diff --cached --quiet; then
             echo "No changes in sample"
             exit 0
           fi
 
-          git commit -m "PressMint preview for PR #$PR_NUMBER"
+          git commit -m "$PRESS_CODE: PressMint preview for PR #$PR_NUMBER"
 
           git push origin "$BRANCH" --force
 
@@ -151,10 +154,10 @@ jobs:
 
             **Preview branch:**
             ```
-            preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE }}
+            preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE,, }}
             ```
 
             **Sample URL:**
-            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE }}/Sample/PressMint-${{ steps.meta_load.outputs.PRESS_CODE }}
+            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE,, }}/Sample/PressMint-${{ steps.meta_load.outputs.PRESS_CODE }}
 
             This preview updates automatically on every push.
