@@ -51,6 +51,7 @@ jobs:
         with:
           repository: ${{ steps.pr.outputs.head_repo }}
           ref: ${{ steps.pr.outputs.head_sha }}
+          fetch-depth: 2
           path: PressMint
 
       - name: PressMint status (Detect changed files and get list of countries that should be processed)
