@@ -19,6 +19,13 @@ permissions:
 jobs:
   preview:
     if: github.event_name == 'workflow_dispatch'
+    outputs:
+      status:
+        value: ${{ steps.build.outputs.status }}
+      build_dir:
+        value: ${{ steps.build.outputs.build_dir }}
+      build_sample:
+        value: ${{ steps.build.outputs.build_sample }}
 
     runs-on: ubuntu-latest
 
