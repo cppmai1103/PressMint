@@ -65,7 +65,7 @@ runs:
         echo "build_sample=${BUILDDIR}/Distro/PressMint-${{inputs.press}}"
         
       shell: bash
-      continue-on-error: true
+      #continue-on-error: true
 
 
     - name: Failing if anything is wrong
