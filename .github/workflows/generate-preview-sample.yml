@@ -122,6 +122,10 @@ jobs:
 
           # copy only sample output
           cp -R $BUILD_SAMPLE Samples/
+          SOURCE_DIR=../PressMint/Samples/PressMint-${{ steps.meta.outputs.PRESS_CODE}}/Sources
+          if [ -d "$SOURCE_DIR" ]; then
+            cp -R $SOURCE_DIR Samples/PressMint-${{ steps.meta.outputs.PRESS_CODE}}/
+          fi
 
           # commit only if changes exist
           git add Samples
@@ -135,6 +139,7 @@ jobs:
 
           git push origin "$BRANCH" --force
       - name: Create or update preview PR
+        id: preview_pr
         env:
           PR_NUMBER: ${{ steps.pr.outputs.number }}
           PRESS_CODE: ${{ steps.meta.outputs.PRESS_CODE }}
