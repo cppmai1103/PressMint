@@ -98,7 +98,7 @@ jobs:
           BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE}}
           BUILD_DIR: ${{ steps.build.outputs.build_dir }}
           BUILD_SAMPLE: ${{ steps.build.outputs.build_sample }}
-          BASE_REF: ${{steps.pr.base_ref}}
+          BASE_REF: ${{steps.pr.outputs.base_ref}}
         run: |
           set -e
 
