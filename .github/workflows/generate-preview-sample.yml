@@ -112,13 +112,11 @@ jobs:
           cd repo
 
           # create or switch to orphan branch
-          git checkout --orphan "$BRANCH" || git checkout "$BRANCH"
+          git checkout -b "$BRANCH" || git checkout "$BRANCH"
 
-          # clean branch
-          git rm -rf . || true
+ 
 
           # copy only sample output
-          mkdir -p Samples
           cp -R $BUILD_SAMPLE Samples/
 
           # commit only if changes exist
