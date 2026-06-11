@@ -7,10 +7,6 @@ on:
         description: "Pull Request number"
         required: true
         type: string
-      repo:
-        description: "Repository (owner/repo)"
-        required: true
-        type: string
 
 permissions:
   contents: write
@@ -31,7 +27,7 @@ jobs:
           script: |
             const prNumber = Number('${{ inputs.pr_number }}');
       
-            const [owner, repo] = '${{ inputs.repo }}'.split('/');
+            const [owner, repo] = '${{ github.repository }}'.split('/');
       
             const { data: pr } = await github.rest.pulls.get({
               owner,
