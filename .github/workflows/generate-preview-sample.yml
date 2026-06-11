@@ -143,6 +143,7 @@ jobs:
           BUILD_SAMPLE: ${{ steps.build.outputs.build_sample }}
           BASE_REF: ${{steps.pr.outputs.base_ref}}
         run: |
+          cd PressMint
           URL=$(gh pr list --head "${BRANCH}" --json url --jq '.[0].url')
           if [ -z "$URL" ]; then
             URL=$(gh pr create \
