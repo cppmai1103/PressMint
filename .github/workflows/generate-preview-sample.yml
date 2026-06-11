@@ -118,11 +118,11 @@ jobs:
           git rm -rf . || true
 
           # copy only sample output
-          mkdir -p Sample
-          cp -R $BUILD_SAMPLE Sample/
+          mkdir -p Samples
+          cp -R $BUILD_SAMPLE Samples/
 
           # commit only if changes exist
-          git add Sample
+          git add Samples
 
           if git diff --cached --quiet; then
             echo "No changes in sample"
@@ -163,6 +163,6 @@ jobs:
             ```
 
             **Sample URL:**
-            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE}}/Sample/PressMint-${{ steps.meta.outputs.PRESS_CODE }}
+            https://github.com/${{ github.repository }}/tree/preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE}}/Samples/PressMint-${{ steps.meta.outputs.PRESS_CODE }}
 
             This preview updates automatically on every push.
