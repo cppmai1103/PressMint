@@ -136,9 +136,12 @@ jobs:
           git push origin "$BRANCH" --force
       - name: Create or update preview PR
         env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          PRESS_CODE: ${{ steps.meta.outputs.PRESS_CODE }}
+          BRANCH: preview-pr-${{ steps.pr.outputs.number }}--${{ steps.meta.outputs.PRESS_CODE}}
           GH_TOKEN: ${{ github.token }}
           BUILD_SAMPLE: ${{ steps.build.outputs.build_sample }}
-          BASE_REF: ${{steps.pr.base_ref}}
+          BASE_REF: ${{steps.pr.outputs.base_ref}}
         run: |
           URL=$(gh pr list --head "${BRANCH}" --json url --jq '.[0].url')
           if [ -z "$URL" ]; then
