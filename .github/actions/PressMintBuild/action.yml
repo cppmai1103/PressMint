@@ -7,6 +7,15 @@ inputs:
   requireTaxonomiesTranslations:
     description: 'require every term in common taxonomies to be translated'
     required: false
+
+outputs:
+  status:
+    value: ${{ steps.build.outputs.status }}
+  build_dir:
+    value: ${{ steps.build.outputs.build_dir }}
+  build_sample:
+    value: ${{ steps.build.outputs.build_sample }}
+
 runs:
   using: "composite"
   steps:
@@ -50,6 +59,10 @@ runs:
         echo "status=$STATUS" >> $GITHUB_OUTPUT
         echo "build_dir=${BUILDDIR}" >> $GITHUB_OUTPUT
         echo "build_sample=${BUILDDIR}/Distro/PressMint-${{inputs.press}}" >> $GITHUB_OUTPUT
+
+        echo "status=$STATUS"
+        echo "build_dir=${BUILDDIR}"
+        echo "build_sample=${BUILDDIR}/Distro/PressMint-${{inputs.press}}"
         
       shell: bash
       continue-on-error: true
