@@ -1513,7 +1513,7 @@
               ...
               <div type="foreignNews">
                 <div type="article">
-                  <head>News for New York</head>
+                  <head>News from France</head>
                   <p>...</p>
                   ...
                   <byline>A.B.</byline>
@@ -1523,6 +1523,25 @@
               ...
             </body>
           </text>
+        </egXML>
+        </p>
+
+        <p>There can be cases where a top-level heading (such as "Foreign News") can be reliably identified in the text, however, it is
+        not clear where the division ends. For such cases we suggest that the top-level heading is grouped together within the division
+        of the lower-level heading but it is qualified by <att>type</att><code>=</code><val>top_level</val>, as is illustrated by the
+        following example:
+        <egXML xmlns="http://www.tei-c.org/ns/Examples" xml:id="exa-top-head">
+          <div type="article">
+            <head type="top_level">Foreign News</head>
+            <head>News from France</head>
+            <p>...</p>
+            ...
+          </div>
+          <div type="article">
+            <head>News from Russia</head>
+            <p>...</p>
+            ...
+          </div>
         </egXML>
         </p>
         
