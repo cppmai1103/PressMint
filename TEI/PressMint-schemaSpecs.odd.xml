@@ -18,7 +18,7 @@
    <moduleRef key="header"
               include="appInfo application availability catDesc catRef category change classDecl correction edition editionStmt                       editorialDecl encodingDesc extent fileDesc funder hyphenation idno langUsage language licence listPrefixDef                       namespace normalization prefixDef profileDesc projectDesc publicationStmt quotation revisionDesc                       segmentation sourceDesc tagUsage tagsDecl taxonomy teiHeader textClass titleStmt"/>
    <moduleRef key="corpus" include="setting settingDesc"/>
-   <moduleRef key="transcr" include="facsimile surface zone"/>
+   <moduleRef key="transcr" include="facsimile surface zone path"/>
    <moduleRef key="namesdates" include="orgName persName placeName"/>
    <!--moduleRef key="linking" include="link linkGrp seg"/-->
    <!--moduleRef key="figures" include="figure"/-->

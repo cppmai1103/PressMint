@@ -1417,6 +1417,12 @@
           recourse to the transcription.
           </p>
 
+          <p>Finally, <gi>surface</gi> and <gi>zone</gi> can also contain the <gi>path</gi> element,
+          which defines any line passing through two or more points within a surface element. How it is used
+          is explained in the
+          <ref target="https://www.tei-c.org/release/doc/tei-p5-doc/en/html/PH.html#PHFAX-egXML-rl">TEI Guidelines</ref>.
+          </p>
+
           <div xml:id="sec-facsimile-ref">
             <head>Connecting the text to the facsimile</head>
 
