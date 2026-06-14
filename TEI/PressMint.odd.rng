@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://www.tei-c.org/ns/1.0"><!--
-Schema generated from ODD source 2026-04-28T09:18:44Z. 2026-04-23. 
+Schema generated from ODD source 2026-06-14T12:53:18Z. 2026-06-14. 
 TEI Edition: P5 Version 4.11.0a. Last updated on 6th October 2025, revision 2d8eae701 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.11.0a/ 
   
@@ -4650,24 +4650,26 @@ Sample values include: 1] glued; 2] pinned; 3] sewn</a:documentation>
                <ref name="tei_model.linePart"/>
             </choice>
          </zeroOrMore>
-         <ref name="tei_att.global.attributes"/>
-         <ref name="tei_att.coordinated.attributes"/>
-         <ref name="tei_att.typed.attributes"/>
-         <ref name="tei_att.written.attributes"/>
          <optional>
-            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
-                       name="rotate"
-                       a:defaultValue="0">
-               <a:documentation>indicates the amount by which this zone has been rotated clockwise, with respect to the normal orientation of the parent <code xmlns="http://www.w3.org/1999/xhtml"
-                        xmlns:rng="http://relaxng.org/ns/structure/1.0">&lt;surface&gt;</code> element as implied by the dimensions given in the <code xmlns="http://www.w3.org/1999/xhtml"
-                        xmlns:rng="http://relaxng.org/ns/structure/1.0">&lt;msDesc&gt;</code> element or by the coordinates of the <code xmlns="http://www.w3.org/1999/xhtml"
-                        xmlns:rng="http://relaxng.org/ns/structure/1.0">&lt;surface&gt;</code> itself. The orientation is expressed in arc degrees.</a:documentation>
+            <attribute name="type">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">characterizes the zone in terms of its text content.</a:documentation>
                <choice>
-                  <data type="double"/>
-                  <data type="token">
-                     <param name="pattern">(\-?[\d]+/\-?[\d]+)</param>
-                  </data>
-                  <data type="decimal"/>
+                  <value>block</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">a general purpose type denoting a block (i.e. a rectangle) of text</a:documentation>
+                  <value>page_text</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">a zone encompasing the page text, i.e. the page without the header, page numbers, footer etc.</a:documentation>
+                  <value>column</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">a column of text</a:documentation>
+                  <value>line</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">a line of text</a:documentation>
+                  <value>heading</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">a section heading</a:documentation>
+                  <value>advertisement</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">a advertisement</a:documentation>
+                  <value>illustration</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">an illustration</a:documentation>
+                  <value>table</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">a table</a:documentation>
                </choice>
             </attribute>
          </optional>

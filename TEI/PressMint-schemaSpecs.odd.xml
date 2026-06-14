@@ -279,6 +279,70 @@
          </egXML>
       </exemplum>
    </elementSpec>
+   <elementSpec ident="zone" xml:id="gi-zone" module="transcr" mode="change">
+      <attList>
+         <attDef ident="type" mode="replace" usage="rec">
+            <desc versionDate="2026-06-14" xml:lang="en">characterizes the zone in terms of its text content.</desc>
+            <valList type="closed">
+               <valItem ident="block">
+                  <desc xml:lang="en">a general purpose type denoting a block (i.e. a rectangle) of text</desc>
+               </valItem>
+               <valItem ident="page_text">
+                  <desc xml:lang="en">a zone encompasing the page text, i.e. the page without the header, page numbers, footer etc.</desc>
+               </valItem>
+               <valItem ident="column">
+                  <desc xml:lang="en">a column of text</desc>
+               </valItem>
+               <valItem ident="line">
+                  <desc xml:lang="en">a line of text</desc>
+               </valItem>
+               <valItem ident="heading">
+                  <desc xml:lang="en">a section heading</desc>
+               </valItem>
+               <valItem ident="advertisement">
+                  <desc xml:lang="en">a advertisement</desc>
+               </valItem>
+               <valItem ident="illustration">
+                  <desc xml:lang="en">an illustration</desc>
+               </valItem>
+               <valItem ident="table">
+                  <desc xml:lang="en">a table</desc>
+               </valItem>
+            </valList>
+         </attDef>
+         <attDef ident="rotate" mode="delete"/>
+         <attDef ident="xml:id" mode="delete"/>
+         <attDef ident="n" mode="delete"/>
+         <attDef ident="xml:lang" mode="delete"/>
+         <attDef ident="xml:base" mode="delete"/>
+         <attDef ident="xml:space" mode="delete"/>
+         <attDef ident="ana" mode="delete"/>
+         <attDef ident="change" mode="delete"/>
+         <attDef ident="facs" mode="delete"/>
+         <attDef ident="corresp" mode="delete"/>
+         <attDef ident="synch" mode="delete"/>
+         <attDef ident="sameAs" mode="delete"/>
+         <attDef ident="copyOf" mode="delete"/>
+         <attDef ident="next" mode="delete"/>
+         <attDef ident="prev" mode="delete"/>
+         <attDef ident="exclude" mode="delete"/>
+         <attDef ident="select" mode="delete"/>
+         <attDef ident="rend" mode="delete"/>
+         <attDef ident="style" mode="delete"/>
+         <attDef ident="rendition" mode="delete"/>
+         <attDef ident="cert" mode="delete"/>
+         <attDef ident="resp" mode="delete"/>
+         <attDef ident="source" mode="delete"/>
+         <attDef ident="start" mode="delete"/>
+         <attDef ident="ulx" mode="delete"/>
+         <attDef ident="uly" mode="delete"/>
+         <attDef ident="lrx" mode="delete"/>
+         <attDef ident="lry" mode="delete"/>
+         <attDef ident="points" mode="delete"/>
+         <attDef ident="subtype" mode="delete"/>
+         <attDef ident="hand" mode="delete"/>
+      </attList>
+   </elementSpec>
    <elementSpec ident="div" module="textstructure" mode="change">
       <attList>
          <attDef ident="type" mode="replace" usage="rec">

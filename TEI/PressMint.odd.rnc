@@ -11,7 +11,7 @@ namespace xi = "http://www.w3.org/2001/XInclude"
 namespace xlink = "http://www.w3.org/1999/xlink"
 namespace xsl = "http://www.w3.org/1999/XSL/Transform"
 
-# Schema generated from ODD source 2026-04-28T09:18:49Z. 2026-04-23. 
+# Schema generated from ODD source 2026-06-14T12:53:23Z. 2026-06-14. 
 # TEI Edition: P5 Version 4.11.0a. Last updated on 6th October 2025, revision 2d8eae701 
 # TEI Edition Location: https://www.tei-c.org/Vault/P5/4.11.0a/ 
 #
@@ -2912,26 +2912,33 @@ tei_zone =
      | tei_model.global
      | tei_surface
      | tei_model.linePart)*,
-    tei_att.global.attributes,
-    tei_att.coordinated.attributes,
-    tei_att.typed.attributes,
-    tei_att.written.attributes,
-    [
-      a:defaultValue = "0"
-      a:documentation [
-        "indicates the amount by which this zone has been rotated clockwise, with respect to the normal orientation of the parent "
-        ns1:code [ "<surface>" ]
-        " element as implied by the dimensions given in the "
-        ns1:code [ "<msDesc>" ]
-        " element or by the coordinates of the "
-        ns1:code [ "<surface>" ]
-        " itself. The orientation is expressed in arc degrees."
-      ]
-    ]
-    attribute rotate {
-      xsd:double
-      | xsd:token { pattern = "(\-?[\d]+/\-?[\d]+)" }
-      | xsd:decimal
+    
+    ## characterizes the zone in terms of its text content.
+    attribute type {
+      
+      ## a general purpose type denoting a block (i.e. a rectangle) of text
+      "block"
+      | 
+        ## a zone encompasing the page text, i.e. the page without the header, page numbers, footer etc.
+        "page_text"
+      | 
+        ## a column of text
+        "column"
+      | 
+        ## a line of text
+        "line"
+      | 
+        ## a section heading
+        "heading"
+      | 
+        ## a advertisement
+        "advertisement"
+      | 
+        ## an illustration
+        "illustration"
+      | 
+        ## a table
+        "table"
     }?,
     empty
   }
