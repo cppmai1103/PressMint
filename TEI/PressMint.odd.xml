@@ -19,7 +19,7 @@
       </titleStmt>
       <publicationStmt>
         <publisher>CLARIN</publisher>
-        <date>2026-06-14</date>
+        <date>2026-06-18</date>
         <availability status="free">
           <p>This file is freely available and you are hereby authorised to copy, modify, and
           redistribute it in any way without further reference or permissions.</p>
@@ -74,6 +74,7 @@
       </langUsage>
     </profileDesc>
     <revisionDesc>
+      <change when="2026-06-18">Tomaž Erjavec: fix bug in lb discussion.</change>
       <change when="2026-06-14">Tomaž Erjavec: insert discussion and definition of zones.</change>
       <change when="2026-04-23">Tomaž Erjavec: insert discussion of EOL split words.</change>
       <change when="2026-04-22">Tomaž Erjavec: introduce idno/@type="local".</change>
@@ -89,7 +90,7 @@
           <titlePart type="main">The structure and encoding of
           <ref target="https://github.com/clarin-eric/PressMint">PressMint corpora</ref></titlePart>
         </docTitle>
-        <docDate>2026-06-14</docDate>
+        <docDate>2026-06-18</docDate>
       </titlePage>
       <p></p>
       <divGen type="toc"/>
@@ -1796,19 +1797,25 @@
             very much depend on the language.
 
             The second case needs this information as well but, futhermore, needs to retain
-            word-internal markup. The example below gives two words, where the markup of the first
-            indicates that the hyphen is not a part of the word, while in the second one it is:
+            word-internal markup.</p>
+
+            <p>The example below gives three end-of-line hyphenated words, where the markup of
+            the first indicates that the hyphen is not a part of the word, the second one can
+            but need not be (as both "fire-proof" and "fireproof" are valid), while for the
+            thrid one the hyphen is always part of the word:
             
             <egXML xmlns="http://www.tei-c.org/ns/Examples" xml:id="exa-ana-token-hyph">
-              <w>recom<pc force="strong">-</pc><lb break="no"/>mended</w>
+              <w>recom<pc force="weak">-</pc><lb break="no"/>mended</w>
               ...
-              <w>fire<pc force="weak">-</pc><lb break="no"/>proof</w>
+              <w>fire<pc force="inter">-</pc><lb break="no"/>proof</w>
+              ...
+              <w>low<pc force="strong">-</pc><lb break="no"/>grade</w>
             </egXML>
             
             It should be noted that when such an encoding is used, then the conversion for
             down-stream formats (such as vertical files for concordancers) where the words
-            should be output in their canonical form, should not output the value of
-            <code>w/pc[@force="strong"</code>.
+            should be output in their canonical form, should not output the content of
+            <code>w/pc[@force="weak"]</code>.
             </p>
 
             <p>There can also be a further added complication with tokenisation if the words are
