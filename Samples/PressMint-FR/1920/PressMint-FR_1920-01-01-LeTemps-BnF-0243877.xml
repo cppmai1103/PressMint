@@ -27,7 +27,7 @@
         </publisher>
         <idno type="handle">TBD</idno>
         <availability status="free">
-          <licence target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</licence>
+          <licence target="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC</licence>
           <p xml:lang="en">Availability for the French PressMint contribution is subject to BnF/Gallica licensing terms.</p>
         </availability>
       </publicationStmt>
@@ -85,7 +85,7 @@
       </langUsage>
     </profileDesc>
     <revisionDesc>
-      <change when="2026-06-27">Initial conversion from BnF METS/ALTO to PressMint TEI.</change>
+      <change when="2026-06-29">Initial conversion from BnF METS/ALTO to PressMint TEI.</change>
     </revisionDesc>
   </teiHeader>
   <facsimile xml:id="PressMint-FR_1920-01-01-LeTemps-BnF-0243877.facsimile">
